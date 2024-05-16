@@ -63,27 +63,27 @@ class MainForm(QWidget):
         self.img_path = ""
         
         self.setObjectName("Form")
-        self.resize(574, 742)
+        self.resize(600, 750)
         self.graphicsView = CustomGraphicsView(self)
         self.graphicsView.setGeometry(QRect(0, 0, 500, 500))
         self.graphicsView.setObjectName("graphicsView")
         self.graphicsView_2 = CustomGraphicsView(self)
-        self.graphicsView_2.setGeometry(QRect(0, 581, 571, 161))
+        self.graphicsView_2.setGeometry(QRect(0, 600, 580, 150))
         self.graphicsView_2.setObjectName("graphicsView_2")
         self.pushButton = QPushButton(self)
-        self.pushButton.setGeometry(QRect(510, 50, 56, 25))
+        self.pushButton.setGeometry(QRect(520, 50, 60, 25))
         self.pushButton.setObjectName("pushButton")
         self.pushButton_2 = QPushButton(self)
-        self.pushButton_2.setGeometry(QRect(510, 100, 56, 25))
+        self.pushButton_2.setGeometry(QRect(520, 100, 60, 25))
         self.pushButton_2.setObjectName("pushButton_2")
         self.pushButton_3 = QPushButton(self)
-        self.pushButton_3.setGeometry(QRect(510, 150, 56, 25))
+        self.pushButton_3.setGeometry(QRect(520, 150, 60, 25))
         self.pushButton_3.setObjectName("pushButton_3")
         self.pushButton_4 = QPushButton(self)
-        self.pushButton_4.setGeometry(QRect(510, 200, 56, 25))
+        self.pushButton_4.setGeometry(QRect(520, 200, 60, 25))
         self.pushButton_4.setObjectName("pushButton_5")
         self.pushButton_5 = QPushButton(self)
-        self.pushButton_5.setGeometry(QRect(510, 250, 56, 25))
+        self.pushButton_5.setGeometry(QRect(520, 250, 60, 25))
         self.pushButton_5.setObjectName("pushButton_5")
 
         self.retranslateUi()
@@ -106,7 +106,7 @@ class MainForm(QWidget):
             img_path, filterType = QFileDialog.getOpenFileNames()
             self.img_path = img_path[0]
             scene = QGraphicsScene()
-            scene.addPixmap(QPixmap(self.img_path).scaled(500, 500))        
+            scene.addPixmap(QPixmap(self.img_path).scaled(450, 450))        
             self.graphicsView.setScene(scene)
         except:
             pass
@@ -120,7 +120,7 @@ class MainForm(QWidget):
         pass
 
     def calculate(self):
-        img = Image.open(self.img_path).resize((500, 500))
+        img = Image.open(self.img_path).resize((450, 450))
         img_arr = np.array(img)
         line = [(self.graphicsView.scene_pos_A.x(), self.graphicsView.scene_pos_A.y()), (self.graphicsView.scene_pos_B.x(), self.graphicsView.scene_pos_B.y())]
 
@@ -132,7 +132,7 @@ class MainForm(QWidget):
 
     def clear(self):
         scene = QGraphicsScene()
-        scene.addPixmap(QPixmap(self.img_path).scaled(500, 500))        
+        scene.addPixmap(QPixmap(self.img_path).scaled(450, 450))        
         self.graphicsView.setScene(scene)
         self.graphicsView.scene_pos_A = 0
         self.graphicsView.scene_pos_B = 0
