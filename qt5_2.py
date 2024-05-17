@@ -88,8 +88,8 @@ class MainForm(QWidget):
 
     def slide_change(self, angle):
         self.pic_scene.removeItem(self.line_item)
-        pointA = ((250 + 250 * math.cos(math.radians(angle))), (250 + 250 * math.sin(math.radians(angle))))
-        pointB = ((250 - 250 * math.cos(math.radians(angle))), (250 - 250 * math.sin(math.radians(angle))))
+        pointA = ((250 + 250 * math.cos(math.radians(angle))), (250 - 250 * math.sin(math.radians(angle))))
+        pointB = ((250 - 250 * math.cos(math.radians(angle))), (250 + 250 * math.sin(math.radians(angle))))
         self.line_item.start_point = QPointF(*pointA)
         self.line_item.end_point = QPointF(*pointB)
         self.pic_scene.addItem(self.line_item)
