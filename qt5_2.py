@@ -65,6 +65,7 @@ class MainForm(QWidget):
         self.setWindowTitle("Form")
         self.pushButton.setText("Image")
         self.pushButton_4.setText("Cal")
+        self.slide_1.setEnabled(False)
 
     def choose_img(self):
         try:
@@ -75,6 +76,7 @@ class MainForm(QWidget):
             self.graphicsView.fitInView(self.pic_scene.sceneRect(), Qt.KeepAspectRatio)
             self.graphicsView.scene().addItem(self.line_item)
             self.slide_1.setValue(0)
+            self.slide_1.setEnabled(True)
         except:
             pass
 
