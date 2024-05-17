@@ -85,14 +85,12 @@ class MainForm(QWidget):
         pass
 
     def slide_change(self, angle):
-        self.pic_scene.clear()
-        self.pic_scene.addPixmap(QPixmap(self.img_path).scaled(500, 500))
+        self.pic_scene.removeItem(self.line_item)
         pointA = ((250 + 250 * math.cos(math.radians(angle))), (250 + 250 * math.sin(math.radians(angle))))
         pointB = ((250 - 250 * math.cos(math.radians(angle))), (250 - 250 * math.sin(math.radians(angle))))
-        new_line = LineItem(pointA, pointB)
-        self.graphicsView.setScene(self.pic_scene)
-        self.graphicsView.fitInView(self.pic_scene.sceneRect(), Qt.KeepAspectRatio)
-        self.graphicsView.scene().addItem(new_line)
+        self.line_item.start_point = QPointF(*pointA)
+        self.line_item.end_point = QPointF(*pointB)
+        self.pic_scene.addItem(self.line_item)
         
         
 if __name__ == "__main__":
