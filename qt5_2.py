@@ -84,6 +84,8 @@ class MainForm(QWidget):
         img = Image.open(self.img_path).resize((500, 500)).convert('L')
         img_arr = np.array(img)
 
+        pointA = self.line_item.start_point.toTuple()
+        pointB = self.line_item.end_point.toTuple()
         pass
 
     def slide_change(self, angle):
