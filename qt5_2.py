@@ -4,6 +4,7 @@ from PyQt5.QtGui import QPen, QPainterPath, QPixmap, QTransform
 from PIL import Image
 import numpy as np
 import sys
+import math
 
 class LineItem(QGraphicsItem):
     def __init__(self, start_point, end_point):
@@ -53,7 +54,7 @@ class MainForm(QWidget):
         self.slide_1 = QSlider(self)
         self.slide_1.setOrientation(1)
         self.slide_1.setGeometry(QRect(50, 550, 400, 20))
-        self.slide_1.setRange(0,359)
+        self.slide_1.setRange(0,180)
 
         self.retranslateUi()
         self.pushButton.clicked.connect(self.choose_img)
@@ -86,6 +87,12 @@ class MainForm(QWidget):
     def slide_change(self, angle):
         self.pic_scene.clear()
         self.pic_scene.addPixmap(QPixmap(self.img_path).scaled(500, 500))
+        pointA = ((250 + 250 * math.cos(math.radians(angle))), (250 + 250 * math.sin(math.radians(angle))))
+        pointB = ((250 - 250 * math.cos(math.radians(angle))), (250 - 250 * math.sin(math.radians(angle))))
+        new_line = LineItem(pointA, pointB)
+        self.graphicsView.setScene(self.pic_scene)
+        self.graphicsView.fitInView(self.pic_scene.sceneRect(), Qt.KeepAspectRatio)
+        self.graphicsView.scene().addItem(new_line)
         
         
 if __name__ == "__main__":
