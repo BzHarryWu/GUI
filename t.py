@@ -1,48 +1,63 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsView, QGraphicsScene, QSlider, QVBoxLayout, QWidget
-from PyQt5.QtCore import Qt, QPointF, QRectF, QLineF
-from PyQt5.QtGui import QPainter, QPen, QColor, QTransform, QPainterPath
+from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene, QApplication, QGraphicsItem
+from PyQt5.QtCore import Qt, QPointF, QRectF
+from PyQt5.QtGui import QPainter, QPen, QPainterPath
 
-class MainWindow(QMainWindow):
+
+class LineItem(QGraphicsItem):
+    def __init__(self, start_point, end_point):
+        super().__init__()
+        self.start_point = start_point
+        self.end_point = end_point
+
+    def boundingRect(self):
+        return self.shape().boundingRect()
+
+    def shape(self):
+        path = QPainterPath()
+        path.moveTo(self.start_point)
+        path.lineTo(self.end_point)
+        return path
+
+    def paint(self, painter, option, widget):
+        pen = QPen(Qt.red)
+        pen.setWidth(2)  # 根据需要调整线条的宽度
+        painter.setPen(pen)
+        painter.drawLine(self.start_point, self.end_point)
+
+
+class MyGraphicsView(QGraphicsView):
     def __init__(self):
         super().__init__()
-
-        self.setWindowTitle("360度線條投射")
-        self.setGeometry(100, 100, 600, 600)
-
-        central_widget = QWidget()
-        self.setCentralWidget(central_widget)
-
-        layout = QVBoxLayout()
-        central_widget.setLayout(layout)
-
         self.scene = QGraphicsScene()
-        self.view = QGraphicsView(self.scene)
-        layout.addWidget(self.view)
+        self.setScene(self.scene)
+        self.initUI()
+        self.x = 10
+        self.y = 10
 
-        self.slider = QSlider(Qt.Horizontal)
-        self.slider.setRange(0, 360)  # 设置滑动范围为0到360度
-        layout.addWidget(self.slider)
+    def initUI(self):
+        # 创建一个线条项并添加到场景中
+        self.line_item = LineItem(QPointF(0, 0), QPointF(100, 100))
+        self.scene.addItem(self.line_item)
 
-        self.slider.valueChanged.connect(self.update_line)
+    def moveLine(self, dx, dy):
+        # 移动线条的起点和终点
+        self.scene.removeItem(self.line_item)
+        new_start_point = self.line_item.start_point + QPointF(dx, dy)
+        new_end_point = self.line_item.end_point + QPointF(dx, dy)
+        self.line_item.start_point = new_start_point
+        self.line_item.end_point = new_end_point
+        self.scene.addItem(self.line_item)
 
-        self.update_line(0)
-
-    def update_line(self, angle):
-        self.scene.clear()
-
-        pen = QPen(QColor("blue"))
-        pen.setWidth(2)
-        self.scene.addLine(0, 0, 100, 0, pen)
-
-        transform = QTransform()
-        transform.rotate(angle)
-        rotated_line = transform.map(QLineF(0, 0, 100, 0))
-
-        self.scene.addLine(rotated_line, pen)
+    def mousePressEvent(self, event):
+        self.moveLine(self.x, self.y)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = MainWindow()
-    window.show()
+    view = MyGraphicsView()
+    view.show()
+
+    # 移动线条的示例
+    view.moveLine(50, 50)
+
     sys.exit(app.exec_())
